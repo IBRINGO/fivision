@@ -30,6 +30,11 @@ const navItems: NavItem[] = [
     path: "/dashboard",
   },
   {
+    name:  "Mes demandes",
+    icon: <ListIcon />,
+    path: "/services/mesdemandes",
+  },
+  {
     name: "Passeport",
     icon: <UserCircleIcon />,
     subItems: [
@@ -47,7 +52,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    name: "Documents juridiques & Attestations",
+    name: "Juridiques & Attestations",
     icon: <PageIcon />,
     subItems: [
       {

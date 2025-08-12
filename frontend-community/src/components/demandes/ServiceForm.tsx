@@ -5,6 +5,7 @@ import Input from "../form/input/InputField";
 import Select from "../form/Select";
 import Label from "../form/Label";
 import Textarea from "../form/input/TextArea";
+import DatePicker from "../form/date-picker";
 
 interface ServiceFormProps {
   steps: string[];
@@ -44,14 +45,16 @@ export default function ServiceForm({ steps, onSubmit, overview }: ServiceFormPr
               value={formData.nom || ""}
               onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
             />
-            <Label>
-              Date de naissance
-            </Label>
-            <Input
-              type="date"
-              value={formData.dateNaissance || ""}
-              onChange={(e) => setFormData({ ...formData, dateNaissance: e.target.value })}
-            />
+            <div>
+              <DatePicker
+                id="date-picker"
+                label="Date de naissance"
+                placeholder="Sélectionnez une date"
+                onChange={( currentDateString) => {
+                  setFormData({ ...formData, dateNaissance: currentDateString });
+                }}
+              />
+            </div>
             <Label>Nationalité</Label>
             <Select
               options={[

@@ -83,18 +83,31 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link to="/" className="lg:hidden">
-            <img
-              className="dark:hidden"
-              src="./images/logo/fivision-logo.png"
-              alt="Logo"
-            />
-            <img
-              className="hidden dark:block"
-              src="./images/logo/fivision-logo.png"
-              alt="Logo"
-            />
-          </Link>
+          <div className="flex items-center gap-2 lg:gap-3">
+            <Link to="/" className="lg:hidden flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-white"
+              title="Home"
+              aria-label="Home"
+
+            >
+              <img
+                className="dark:hidden"
+                src="./images/logo/fivision-logo-icon.svg"
+                alt="Logo"
+              />
+              <img
+                className="hidden dark:block"
+                src="./images/logo/fivision-logo-icon.svg"
+                alt="Logo"
+              />
+            </Link>
+            <span 
+              className="lg:hidden text-lg font-semibold text-gray-800 dark:text-white"
+              title="Fivision"
+            >
+              Fivision
+            </span>
+          
+          </div>
 
           <button
             title="Toggle Application Menu"

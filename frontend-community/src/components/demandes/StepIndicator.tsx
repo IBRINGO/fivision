@@ -17,8 +17,8 @@ export default function StepIndicator({ steps, currentStep }: StepIndicatorProps
             {index + 1}
           </div>
           <span className="mt-1 text-xs text-center">{step}</span>
-          {index < steps.length - 1 && (
-            <div className={`h-1 w-full ${index < currentStep ? "bg-brand-500" : "bg-slate-300"}`}></div>
+          {index < steps.length && (
+            <div className={`h-1 w-full ${index <= currentStep ? "bg-brand-500" : "bg-slate-300"}`}></div>
           )}
         </div>
       ))}

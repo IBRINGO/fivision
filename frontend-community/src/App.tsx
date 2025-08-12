@@ -16,10 +16,14 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import HistoryRequests from "./pages/mesdemandes/HistoryRequests";
+import MyRequestsManager from "./pages/mesdemandes/MyRequestsManager";
+import NotificationsPage from "./pages/notifications/NotificationsPage";
 import HomePage from "./pages/OnBoarding/HomePage";
 import DemandePasseport from "./pages/services/passeport/demande";
 import RenouvellementPasseport from "./pages/services/passeport/renouvellement";
 import PasseportMineur from "./pages/services/passeport/mineur";
+
 
 export default function App() {
   return (
@@ -38,11 +42,21 @@ export default function App() {
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
             <Route index path="/dashboard" element={<Home />} />
-
+            <Route path="/notifications" element={<NotificationsPage />} />
+            
+            {/* Mes Demandes */}
             <Route
               path="/services/*"
               element={
                 <Routes>
+                  <Route
+                    path="mesdemandes"
+                    element={<HistoryRequests />}
+                  />
+                  <Route
+                    path="mesdemandes/gerer"
+                    element={<MyRequestsManager />}
+                  />
                   <Route
                     path="passeport/demande"
                     element={<DemandePasseport />}

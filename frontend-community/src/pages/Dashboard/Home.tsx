@@ -1,5 +1,6 @@
 // src/pages/DashboardStudent.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Badge  from '../../components/ui/badge/Badge';
 import Button  from '../../components/ui/button/Button';
  import {
@@ -12,7 +13,6 @@ import Button  from '../../components/ui/button/Button';
   DownloadCloud,
   Inbox,
 } from "lucide-react"; // icons (fallback lucide)
-import Avatar from '../../components/ui/avatar/Avatar';
 
 /**
  * Dashboard étudiant - React + TypeScript + Tailwind
@@ -136,8 +136,9 @@ const StatCard: React.FC<{ icon: React.ComponentType<{ className?: string }>; la
    Main page
    ---------------------------*/
 export default function DashboardStudent() {
-  // in the real app -> fetch user and data via hooks / context
+  
   const userName = mockUserName;
+  const navigate = useNavigate();
 
   return (
     <div className="p-6 space-y-6">
@@ -170,7 +171,7 @@ export default function DashboardStudent() {
         {/* Left column: Requests table + Documents */}
         <div className="lg:col-span-2 space-y-6">
           {/* Requests table */}
-          <section className="bg-white dark:bg-slate-800 shadow-sm rounded-lg p-4">
+          <section className="bg-white dark:bg-slate-800 shadow-sm rounded-lg p-2">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Statut des demandes</h2>
               <Button variant="ghost" onClick={() => { /* navigate to all requests */ }}>Voir toutes mes demandes</Button>
@@ -190,10 +191,10 @@ export default function DashboardStudent() {
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                   {mockRequests.map((r) => (
                     <tr key={r.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/40">
-                      <td className="px-3 py-3 text-sm font-medium text-slate-800 dark:text-slate-100">{r.id}</td>
-                      <td className="px-3 py-3 text-sm text-slate-600 dark:text-slate-300">{r.service}</td>
-                      <td className="px-3 py-3 text-sm text-slate-500 dark:text-slate-400">{formatDate(r.submittedAt)}</td>
-                      <td className="px-3 py-3">{statusBadge(r.status)}</td>
+                      <td className="px-1 py-3 text-sm font-medium text-slate-800 dark:text-slate-100">{r.id}</td>
+                      <td className="px-1 py-3 text-sm text-slate-600 dark:text-slate-300">{r.service}</td>
+                      <td className="px-1 py-3 text-sm text-slate-500 dark:text-slate-400">{formatDate(r.submittedAt)}</td>
+                      <td className="py-3">{statusBadge(r.status)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -210,7 +211,9 @@ export default function DashboardStudent() {
           <section className="bg-white dark:bg-slate-800 shadow-sm rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Documents officiels</h3>
-              <Button size="sm" variant="outline">Gérer mes documents</Button>
+              <Button size="sm" variant="outline"
+                onClick={() => navigate("/services/mesdemandes/gerer")}>
+              Gérer mes documents</Button>
             </div>
 
             <ul className="space-y-3">
@@ -271,7 +274,9 @@ export default function DashboardStudent() {
          <section className="bg-white dark:bg-slate-800 shadow-md rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-semibold">Notifications</h4>
-              <Button size="sm" variant="ghost">Tout lire</Button>
+              <Button size="sm" variant="ghost"
+                onClick={() => { navigate("/notifications") }}>
+              Tout lire</Button>
             </div>
             <ul className="space-y-2">
               {mockNotifications.map((n) => (

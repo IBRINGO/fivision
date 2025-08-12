@@ -78,7 +78,12 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             </svg>
           </button>
 
-          <Link to="/" className="lg:hidden">
+          <div>
+          <Link to="/" className="lg:hidden flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-white"
+            title="Home"
+            aria-label="Home"
+
+          >
             <img
               className="dark:hidden"
               src="./images/logo/logo.svg"
@@ -90,6 +95,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
               alt="Logo"
             />
           </Link>
+          </div>
 
           <button
             onClick={toggleApplicationMenu}
