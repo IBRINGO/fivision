@@ -1,10 +1,11 @@
 import React from "react";
-import ServiceOverview from "../../../components/demandes/ServiceOverview";
-import ServiceForm from "../../../components/demandes/ServiceForm";
+import ServiceOverview from "../../components/demandes/ServiceOverview";
+import ServiceForm from "../../components/demandes/ServiceForm";
 
 interface ServiceViewProps {
   overview: {
-    documents: string[];
+    documents: {name: string, required: boolean}[];
+    isFree: boolean;
     fees: string;
     delay: string;
     extraInfo?: string;

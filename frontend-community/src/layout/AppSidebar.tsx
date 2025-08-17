@@ -15,6 +15,7 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import { CheckSquareIcon, IdCardIcon, PlaneIcon } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -32,13 +33,26 @@ const navItems: NavItem[] = [
   {
     name:  "Mes demandes",
     icon: <ListIcon />,
-    path: "/services/mesdemandes",
+    path: "/services/mesdemandes/gerer",
+  },
+  {
+    name: "Documents d'identité",
+    icon: <IdCardIcon />,
+    subItems: [
+      { name: "Enrôlement NINA", path: "/services/documents-identite/enrolement-nina" },
+      { name: "Fiche individuelle NINA", path: "/services/documents-identite/fiche-individuelle-nina" },
+      { name: "Fiche individuelle", path: "/services/documents-identite/fiche-etat-civil" },
+      { name: "Enrôlement Carte Biométrique", path: "/services/documents-identite/enrolement-carte-biometrique" },
+      { name: "Retrait carte Biométrique sécurisée", path: "/services/documents-identite/retrait-carte-biometrique" },
+    ],
   },
   {
     name: "Passeport",
     icon: <UserCircleIcon />,
     subItems: [
       { name: "Demande de Passeport", path: "/services/passeport/demande" },
+      { name: "Passeport Ordinaire", path: "/services/passeport/ordinaire" },
+      { name: "Retrait Passeport", path: "/services/passeport/retrait" },
       { name: "Renouvellement", path: "/services/passeport/renouvellement" },
       { name: "Passeport pour mineur", path: "/services/passeport/mineur" },
     ],
@@ -52,45 +66,79 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    name: "Visa et voyage",
+    icon: <PlaneIcon/>, 
+    subItems: [
+      { name: "Visa 3 mois", path: "/services/visa-voyage/visa-3mois" },
+      { name: "Visa 6 mois", path: "/services/visa-voyage/visa-6mois" },
+      { name: "Laissez-passer", path: "/services/visa-voyage/laissez-passer" },
+      { name: "Autorisation sortie(Maroc)", path: "/services/visa-voyage/autorisation-sortie" },
+    ],
+  },
+  {
     name: "Juridiques & Attestations",
     icon: <PageIcon />,
     subItems: [
       {
         name: "Attestations",
-        path: "/services/attestations",
+        path: "/services/attestations/attestation",
         pro: false,
-        new: true,
       },
       {
         name: "Légalisation / Authentification",
-        path: "/services/legalisation",
+        path: "/services/juridiques/legalisation",
       },
       {
         name: "Certificat de nationalité",
-        path: "/services/nationalite",
+        path: "/services/juridiques/nationalite",
       },
       {
         name: "Autorisation parentale",
-        path: "/services/autorisation-parentale",
+        path: "/services/autorisations/autorisation-parentale",
       },
     ],
   },
+  {
+    name: "Légalisations diverses",
+    icon: <CheckSquareIcon />,
+    subItems: [
+      { name: "Légalisation acte de naissance", path: "/services/legalisations/acte-naissance" },
+      { name: "Légalisation certificat de nationalité", path: "/services/legalisations/certificat-nationalite" },
+      { name: "Légalisation casier judiciaire", path: "/services/legalisations/casier-judiciaire" },
+      { name: "Légalisation casier judiciaire étudiant", path: "/services/legalisations/casier-judiciaire-etudiant" },
+      { name: "Légalisation copie du passeport", path: "/services/legalisations/copie-passeport" },
+    ],
+  },
+
   {
     name: "Actes d’état civil",
     icon: <ListIcon />,
     subItems: [
       { name: "Acte de naissance", path: "/services/etat-civil/naissance" },
       { name: "Acte de mariage", path: "/services/etat-civil/mariage" },
+      { name: "Acte de divorce", path: "/services/etat-civil/divorce" },
       { name: "Acte de décès", path: "/services/etat-civil/deces" },
     ],
   },
+  {
+    name: "Procurations",
+    icon: <BoxCubeIcon />,
+    subItems: [
+      { name: "Mandats spéciaux", path: "/services/procurations/mandats-speciaux" },
+      { name: "Retrait passeport", path: "/services/procurations/retrait-passeport" },
+      { name: "Retrait carte biométrique", path: "/services/procurations/retrait-carte-biometrique" }
+    ],
+  },
+
   {
     name: "Demandes spéciales",
     icon: <BoxCubeIcon />,
     subItems: [
       { name: "Procuration", path: "/services/procuration" },
-      { name: "Certificat de célibat", path: "/services/celibat" },
-      { name: "Transfert de corps", path: "/services/transfert-corps" },
+      { name: "Certificat de célibat", path: "/services/special/celibat" },
+      { name: "Transfert de corps", path: "/services/special/transfert-corps" },
+      { name: "Demande Particulière", path: "/services/special/particuliere" },
+      
     ],
   },
 ];

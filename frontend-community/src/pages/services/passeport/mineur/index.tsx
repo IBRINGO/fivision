@@ -1,9 +1,30 @@
 import React from "react";
-import ServiceView from "../ServiceView";
+import ServiceView from "../../ServiceView";
 import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
 import PageMeta from "../../../../components/common/PageMeta";
 
 export default function PasseportMineur() {
+
+  const overview = {
+    documents: [
+      {name: "Formulaire de demande rempli", required: true},
+      {name: "Copie de la carte d'identité du parent", required: true},
+      {name: "Acte de naissance du mineur", required: true},
+      {name: "2 photos d'identité récentes du mineur", required: true}
+    ],
+    isFree: false,
+    fees: "300 MAD",
+    delay: "15 jours ouvrables",
+    extraInfo: "Assurez-vous que tous les documents sont à jour."
+  };
+  
+  const steps = [
+    "Informations sur le mineur",
+    "Téléversement des documents",
+    "Révision des informations",
+    "Paiement et soumission",
+  ];
+
   return (
     <>
       <PageMeta
@@ -12,23 +33,8 @@ export default function PasseportMineur() {
       />
       <PageBreadcrumb pageTitle="Passeport Mineur" />
       <ServiceView
-        overview={{
-          documents: [
-            "Formulaire de demande rempli",
-            "Copie de la carte d'identité du parent",
-            "Acte de naissance du mineur",
-            "2 photos d'identité récentes du mineur"
-          ],
-          fees: "300 MAD",
-          delay: "15 jours ouvrables",
-          extraInfo: "Assurez-vous que tous les documents sont à jour."
-        }}
-        steps={[
-          "Informations personnelles du mineur",
-          "Téléversement des documents",
-          "Paiement des frais",
-          "Confirmation de la demande"
-        ]}
+        overview={overview}
+        steps={steps}
       />
     </>
   );

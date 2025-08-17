@@ -91,12 +91,12 @@ const AppHeader: React.FC = () => {
             >
               <img
                 className="dark:hidden"
-                src="./images/logo/fivision-logo-icon.svg"
+                src="/images/logo/fivision-logo-icon.svg"
                 alt="Logo"
               />
               <img
                 className="hidden dark:block"
-                src="./images/logo/fivision-logo-icon.svg"
+                src="/images/logo/fivision-logo-icon.svg"
                 alt="Logo"
               />
             </Link>

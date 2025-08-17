@@ -141,20 +141,21 @@ export default function DashboardStudent() {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-2 lg:p-1 space-y-6">
       {/* Header */}
       <header className="flex items-start justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Espace Étudiant</h1>
+          <h1 className="md:text-2xl text-xl font-extrabold text-slate-900 dark:text-white">Espace Étudiant</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
             Un aperçu en temps réel de vos démarches et documents
           </p>
+          {/* The text below is very important so it is bold. */}
+          <p className="mt-1 text-sm font-bold text-slate-600 dark:text-slate-400">
+            Enregistrez-vous au près de l'ambassade pour accéder à votre espace et gérer vos démarches.
+          </p>
         </div>
-        <div className="flex items-center gap-4">
-          <div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">Bonjour,</div>
-            <div className="font-semibold text-slate-900 dark:text-white">{userName}</div>
-          </div>
+        <div>
+          <Button variant="primary" onClick={() => navigate("/auth/register")}>Je m'enregistre</Button>
         </div>
       </header>
 
@@ -218,7 +219,7 @@ export default function DashboardStudent() {
 
             <ul className="space-y-3">
               {mockDocuments.map((doc) => (
-                <li key={doc.id} className="flex items-center justify-between gap-4 p-3 rounded-md hover:bg-slate-50 dark:hover:bg-slate-900/30">
+                <li key={doc.id} className="flex lg:flex-row flex-col items-center justify-between gap-4 p-3 rounded-md hover:bg-slate-50 dark:hover:bg-slate-900/30">
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-slate-600 dark:text-slate-300" />
                     <div>
@@ -249,20 +250,22 @@ export default function DashboardStudent() {
           {/* Interactions */}
           <section className="bg-white dark:bg-slate-800 shadow-md rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold">Historique</h4>
-              <Button size="sm" variant="link">Voir tout</Button>
+              <h4 className="font-semibold md:text-lg text-base dark:text-white ">Rendez-vous</h4>
+              <Button size="sm" variant="link"
+                onClick={() => { navigate("/services/rendez-vous/mesrendez-vous") }}>
+              Voir tout</Button>
             </div>
             <ul className="space-y-3">
               {mockInteractions.map((it) => (
                 <li key={it.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900/40">
                   <div className="p-2 rounded-full bg-brand-50 dark:bg-brand-900/20">
-                    {it.type === "message" && <User className="w-5 h-5 text-brand-600" />}
+                    {it.type === "message" && <User className="w-5 h-5 text-brand-600 " />}
                     {it.type === "rendez-vous" && <Clock className="w-5 h-5 text-brand-600" />}
                     {it.type === "document" && <FileText className="w-5 h-5 text-brand-600" />}
                   </div>
                   <div>
-                    <div className="font-medium">{it.summary}</div>
-                    <div className="text-xs text-slate-500">{formatDate(it.date)}</div>
+                    <div className="font-medium dark:text-white">{it.summary}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(it.date)}</div>
                   </div>
                   
                 </li>
@@ -273,8 +276,8 @@ export default function DashboardStudent() {
           {/* Notifications & Rappels */}
          <section className="bg-white dark:bg-slate-800 shadow-md rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold">Notifications</h4>
-              <Button size="sm" variant="ghost"
+              <h4 className="font-semibold md:text-lg text-base dark:text-white">Notifications</h4>
+              <Button size="sm" variant="ghost" className="dark:text-white"
                 onClick={() => { navigate("/notifications") }}>
               Tout lire</Button>
             </div>
@@ -287,8 +290,8 @@ export default function DashboardStudent() {
                     {n.type === "info" && <Inbox className="w-5 h-5" />}
                   </div>
                   <div>
-                    <div className="text-sm">{n.text}</div>
-                    <div className="text-xs text-slate-500">{formatDate(n.datetime)}</div>
+                    <div className="text-sm dark:text-slate-200">{n.text}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(n.datetime)}</div>
                   </div>
                 </li>
               ))}
