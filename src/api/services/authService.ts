@@ -10,27 +10,40 @@ import { UserProfileDTO } from "../dto/UserDTO";
 
 export const authService = {
   login: async (payload: LoginRequest): Promise<LoginResponse> => {
-    const res = await api.post("/auth/login", payload);
-    return res.data;
+    console.log("🔐 Tentative de login avec :", payload);
+    
+    const { data } = await api.post<LoginResponse>("/users/login", payload);
+    return data;
   },
+
   getProfile: async (): Promise<UserProfileDTO> => {
-    const res = await api.get("/auth/profile");
-    return res.data;
+    const { data } = await api.get<UserProfileDTO>("/users/profile");
+    return data;
   },
 
-  register: async (payload: RegisterRequest): Promise<void> => {
-    await api.post("/auth/register", payload);
+  register: async (payload: RegisterRequest): Promise<{ message: string }> => {
+    const { data } = await api.post<{ message: string }>("/users/register", payload);
+    return data;
   },
 
-  sendOtp: async (payload: OtpRequest): Promise<void> => {
-    await api.post("/auth/send-otp", payload);
+  sendOtp: async (payload: OtpRequest): Promise<{ message: string }> => {
+    console.log("📩 Envoi OTP à :", payload);
+    const { data } = await api.post<{ message: string }>("/users/send-otp",payload);
+    console.log("✅ OTP envoyé à :", data);
+    return data;
   },
 
-  verifyOtp: async (payload: VerifyOtpRequest): Promise<void> => {
-    await api.post("/auth/verify-otp", payload);
+  verifyOtp: async (payload: VerifyOtpRequest): Promise<{ message: string }> => {
+    console.log("🔍 Vérification OTP pour :", payload);
+    
+    const { data } = await api.post<{ message: string }>("/users/verify-otp", payload);
+    console.log("✅ OTP vérifié :", data);
+    
+    return data;
   },
 
-  logout: async (): Promise<void> => {
-    await api.post("/auth/logout");
+  logout: async (): Promise<{ message: string }> => {
+    const { data } = await api.post<{ message: string }>("/auth/logout");
+    return data;
   },
 };

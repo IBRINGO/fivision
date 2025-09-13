@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { data, Link, useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -16,33 +16,35 @@ export default function SignInForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setError(null);
 
-    const formData = new FormData(e.currentTarget);
-    const email = (formData.get("email") as string)?.trim();
-    const password = (formData.get("password") as string)?.trim();
+  const formData = new FormData(e.currentTarget);
+  const email = (formData.get("email") as string)?.trim();
+  const password = (formData.get("password") as string)?.trim();
 
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setError("Veuillez entrer une adresse email valide.");
-      return;
-    }
-    if (!password || password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères.");
-      return;
-    }
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    setError("Veuillez entrer une adresse email valide.");
+    return;
+  }
+  if (!password || password.length < 6) {
+    setError("Le mot de passe doit contenir au moins 6 caractères.");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      await login(email, password);
-      navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Email ou mot de passe incorrect");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    // ✅ utiliser les variables email et password extraites
+    await login(email, password );
+    navigate("/dashboard");
+  } catch (err: any) {
+    setError(err.response?.data?.message || "Email ou mot de passe incorrect");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">

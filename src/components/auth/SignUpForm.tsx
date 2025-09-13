@@ -9,70 +9,63 @@ import { EyeClosed, EyeIcon } from "lucide-react";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [errorEmail, setErrorEmail] = useState<string | null>(null);
   const [errorPassword, setErrorPassword] = useState<string | null>(null);
-  const [errorFirstName, setErrorFirstName] = useState<string | null>(null);
-  const [errorLastName, setErrorLastName] = useState<string | null>(null);
+  const [errorFname, setErrorFname] = useState<string | null>(null);
+  const [errorLname, setErrorLname] = useState<string | null>(null);
   const [errorOtp, setErrorOtp] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<"form" | "otp">("form");
   const [otp, setOtp] = useState("");
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    emailOrPhone: "",
+    fname: "",
+    lname: "",
     email: "",
     password: "",
+    accepted_terms: false,
   });
+
   const navigate = useNavigate();
   const { register, sendOtp, verifyOtp } = useAuth();
 
+  // --- ENVOI OTP ---
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorEmail(null);
     setErrorPassword(null);
-    setErrorFirstName(null);
-    setErrorLastName(null);
+    setErrorFname(null);
+    setErrorLname(null);
     setError(null);
 
-    const data = new FormData(e.currentTarget as HTMLFormElement);
-    const email = (data.get("email") as string)?.trim();
-    const password = (data.get("password") as string)?.trim();
-    const firstName = data.get("firstName") as string;
-    const lastName = data.get("lastName") as string;
-    const emailOrPhone = data.get("emailOrPhone") as string;
+    const { fname, lname, email, password, accepted_terms } = formData;
 
-    // ✅ Validation frontend
-    if (!firstName || !lastName) {
-      if (!firstName)
-        setErrorFirstName("Veuillez renseigner votre prénom.");
-      if (!lastName)
-        setErrorLastName("Veuillez renseigner votre nom.");
-      return;
-    }
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setErrorEmail("Email invalide.");
-      return;
-    }
-    if (!password || password.length < 6) {
+    // Validation frontend
+    if (!fname) setErrorFname("Veuillez renseigner votre prénom.");
+    if (!lname) setErrorLname("Veuillez renseigner votre nom.");
+    if (!email || !/\S+@\S+\.\S+/.test(email)) setErrorEmail("Email invalide.");
+    if (!password || password.length < 6)
       setErrorPassword("Le mot de passe doit contenir au moins 6 caractères.");
-      return;
-    }
+    if (!accepted_terms)
+      setError("Vous devez accepter les termes et conditions.");
+
+    if (!fname || !lname || !email || !password || !accepted_terms) return;
 
     try {
-      setLoading(true);
-      await sendOtp(email); // Envoi OTP backend
-      setFormData({ email, password, firstName, lastName, emailOrPhone });
-      setStep("otp");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Erreur lors de l’envoi de l’OTP.");
-    } finally {
-      setLoading(false);
-    }
+  setLoading(true);
+  await sendOtp(formData.email); // ✅ envoyer comme objet
+  setStep("otp");
+  console.log("OTP envoyé à :", formData.email);
+} catch (err: any) {
+  setError(err.response?.data?.error || "Erreur lors de l’envoi de l’OTP.");
+} finally {
+  setLoading(false);
+}
+
+
   };
 
+  // --- VERIFICATION OTP ET CREATION COMPTE ---
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorOtp(null);
@@ -84,8 +77,8 @@ export default function SignUpForm() {
 
     try {
       setLoading(true);
-      await verifyOtp({ ...formData, otp });
-      await register(formData); // création compte backend
+      await verifyOtp({ email: formData.email, otp });
+      await register({fname: formData.fname, lname: formData.lname, email: formData.email, password: formData.password, accepted_terms: formData.accepted_terms}); // création compte backend
       alert("Compte créé avec succès 🎉");
       navigate("/signin");
     } catch (err: any) {
@@ -108,55 +101,70 @@ export default function SignUpForm() {
                 Remplissez le formulaire pour créer votre compte
               </p>
             </div>
+
             <form onSubmit={handleSubmitForm} className="space-y-5">
               <div>
-                <Label>Prénom<span className="text-error-500">*</span></Label>
+                <Label>
+                  Prénom<span className="text-error-500">*</span>
+                </Label>
                 <Input
-                  name="firstName"
+                  name="fname"
                   type="text"
-                  value={formData.firstName}
-                  onChange={e => {
-                    setFormData({...formData, firstName: e.target.value})
-                    setErrorFirstName(null);
-                  }} />
-                  {errorFirstName && <p className="text-red-500 mt-2">{errorFirstName}</p>}
+                  value={formData.fname}
+                  onChange={(e) => {
+                    setFormData({ ...formData, fname: e.target.value });
+                    setErrorFname(null);
+                  }}
+                />
+                {errorFname && <p className="text-red-500 mt-2">{errorFname}</p>}
               </div>
+
               <div>
-                <Label>Nom<span className="text-error-500">*</span></Label>
+                <Label>
+                  Nom<span className="text-error-500">*</span>
+                </Label>
                 <Input
-                  name="lastName"
+                  name="lname"
                   type="text"
-                  value={formData.lastName}
-                  onChange={e => {
-                    setFormData({...formData, lastName: e.target.value})
-                    setErrorLastName(null);
-                  }} />
-                  {errorLastName && <p className="text-red-500 mt-2">{errorLastName}</p>}
+                  value={formData.lname}
+                  onChange={(e) => {
+                    setFormData({ ...formData, lname: e.target.value });
+                    setErrorLname(null);
+                  }}
+                />
+                {errorLname && <p className="text-red-500 mt-2">{errorLname}</p>}
               </div>
-              
+
               <div>
-                <Label>Email<span className="text-error-500">*</span></Label>
+                <Label>
+                  Email<span className="text-error-500">*</span>
+                </Label>
                 <Input
                   name="email"
                   type="email"
                   value={formData.email}
-                  onChange={e => {
-                    setFormData({...formData, email: e.target.value})
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
                     setErrorEmail(null);
-                  }} />
+                  }}
+                />
                 {errorEmail && <p className="text-red-500 mt-2">{errorEmail}</p>}
               </div>
+
               <div>
-                <Label>Mot de passe<span className="text-error-500">*</span></Label>
+                <Label>
+                  Mot de passe<span className="text-error-500">*</span>
+                </Label>
                 <div className="relative">
                   <Input
                     name="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={e => {
-                      setFormData({...formData, password: e.target.value})
+                    onChange={(e) => {
+                      setFormData({ ...formData, password: e.target.value });
                       setErrorPassword(null);
-                    }} />
+                    }}
+                  />
                   <span
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
@@ -164,17 +172,35 @@ export default function SignUpForm() {
                     {showPassword ? <EyeIcon /> : <EyeClosed />}
                   </span>
                 </div>
-                {errorPassword && <p className="text-red-500 mt-2">{errorPassword}</p>}
+                {errorPassword && (
+                  <p className="text-red-500 mt-2">{errorPassword}</p>
+                )}
               </div>
+
               <div className="flex items-center gap-3">
-                <Checkbox checked={isChecked} onChange={setIsChecked} />
+                <Checkbox
+                  checked={formData.accepted_terms}
+                  onChange={(checked) =>
+                    setFormData({ ...formData, accepted_terms: checked })
+                  }
+                />
                 <p className="text-gray-500 dark:text-gray-400">
-                  J'accepte les <span className="text-gray-800 dark:text-white">Termes et Conditions</span>
+                  J'accepte les{" "}
+                  <span className="text-gray-800 dark:text-white">
+                    Termes et Conditions
+                  </span>
                 </p>
               </div>
-              {error && <p className="text-red-500 mt-2">{error}</p>}
-              <Button className="w-full" type="submit" disabled={!isChecked || loading}>{loading ? "Envoi en cours..." : "Envoyer le code OTP"}</Button>
 
+              {error && <p className="text-red-500 mt-2">{error}</p>}
+
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={!formData.accepted_terms || loading}
+              >
+                {loading ? "Envoi en cours..." : "Envoyer le code OTP"}
+              </Button>
             </form>
           </>
         )}
@@ -186,28 +212,32 @@ export default function SignUpForm() {
                 Vérification OTP
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Un code a été envoyé à <b>{formData.email}</b>. Entrez-le ci-dessous.
+                Un code a été envoyé à <b>{formData.email}</b>. Entrez-le
+                ci-dessous.
               </p>
             </div>
+
             <form onSubmit={handleVerifyOtp} className="space-y-5">
               <div>
                 <Label>Code OTP</Label>
                 <Input
                   name="otp"
                   value={otp}
-                  onChange={e => {
+                  onChange={(e) => {
                     setOtp(e.target.value);
                     setErrorOtp(null);
                   }}
-                   placeholder="Ex: 123456"
-                   type="number"
-                   className="w-full"
-                   max="6"
-                   />
+                  placeholder="Ex: 123456"
+                  type="number"
+                  className="w-full"
+                />
               </div>
-              {errorOtp && <p className="text-red-500 mt-2">{errorOtp}</p>}
-              <Button className="w-full" type="submit">{loading ? "Vérification en cours..." : "Vérifier et créer mon compte"}</Button>
 
+              {errorOtp && <p className="text-red-500 mt-2">{errorOtp}</p>}
+
+              <Button className="w-full" type="submit">
+                {loading ? "Vérification en cours..." : "Vérifier et créer mon compte"}
+              </Button>
             </form>
           </>
         )}

@@ -36,19 +36,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const res = await authService.login({ email, password });
-    localStorage.setItem("token", res.token);
-    const profile = await authService.getProfile();
-    setUser(profile);
-  };
+const login = async (email: string, password: string) => {
+  const res = await authService.login({ email, password });
+  localStorage.setItem("token", res.token);
+  setUser(res.user); // ⬅️ on utilise le user du login
+};
+
 
   const register = async (data: any) => {
     await authService.register(data);
   };
 
   const sendOtp = async (emailOrPhone: string) => {
-    await authService.sendOtp({ emailOrPhone });
+    await authService.sendOtp({ email: emailOrPhone });
   };
 
   const verifyOtp = async (data: any) => {
