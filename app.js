@@ -1,14 +1,13 @@
-// app.js
 const express = require("express");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// ✅ Autoriser le frontend React (http://localhost:5173 par défaut)
+// ✅ Autoriser le frontend React
 app.use(cors({
-  origin: "http://localhost:5173",  // ton frontend
-  credentials: true                 // obligatoire si tu utilises withCredentials côté axios
+  origin: "http://localhost:5173",
+  credentials: true
 }));
 
 // Middleware pour parser le JSON

@@ -1,3 +1,6 @@
+
+#psql -U postgres -d mydb
+
 # Utiliser une image officielle Node.js
 FROM node:18
 

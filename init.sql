@@ -1,40 +1,30 @@
--- Utilisateurs validés
+-- Table des utilisateurs
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  fname VARCHAR(100),
-  lname VARCHAR(100),
-  email VARCHAR(255) UNIQUE,
-  password VARCHAR(255),
-  accepted_terms BOOLEAN,
+  fname VARCHAR(100) NOT NULL,
+  lname VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,        -- stocké hashé
+  accepted_terms BOOLEAN NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Utilisateurs en attente
-CREATE TABLE pending_users (
-  id SERIAL PRIMARY KEY,
-  fname VARCHAR(100),
-  lname VARCHAR(100),
-  email VARCHAR(255) UNIQUE,
-  password VARCHAR(255),
-  accepted_terms BOOLEAN,
-  is_verified BOOLEAN DEFAULT FALSE, -- Nouveau champ
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- OTP
+-- Table OTP (liée à l'email, pas besoin de user_id au départ)
 CREATE TABLE otp (
   id SERIAL PRIMARY KEY,
-  pending_user_id INT REFERENCES pending_users(id),
-  otp_code VARCHAR(6),
-  expires_at TIMESTAMP,
-  is_pending BOOLEAN DEFAULT TRUE -- Nouveau champ
+  email VARCHAR(255) NOT NULL,           -- OTP associé à un email
+  otp_code CHAR(6) NOT NULL,             -- toujours 6 chiffres
+  expires_at TIMESTAMP NOT NULL,         -- date d’expiration
+  is_pending BOOLEAN DEFAULT TRUE,       -- encore valide ?
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Historique vérification OTP
+-- Historique de vérification OTP
 CREATE TABLE otp_verify (
   id SERIAL PRIMARY KEY,
-  otp_id INT REFERENCES otp(id),
-  verified BOOLEAN,
-  verified_at TIMESTAMP,
-  attempt_ip VARCHAR(50)
+  otp_id INT NOT NULL REFERENCES otp(id) ON DELETE CASCADE,
+  verified BOOLEAN NOT NULL,
+  verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  attempt_ip VARCHAR(50),
+  email VARCHAR(255) NOT NULL            -- email utilisé lors de la tentative
 );

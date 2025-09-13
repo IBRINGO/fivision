@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, verifyOtp, loginUser, getUsers,sendOtpEmail } = require('../controller/userControllers');
+const { registerUser, sendOtpDirect, verifyOtp, loginUser } = require('../controller/userControllers');
 
-router.post('/register', createUser);
-router.post('/verify-otp', verifyOtp);
-router.post('/login', loginUser);
-router.post('/send-otp', sendOtpEmail);
+// 1. Pré-inscription : création utilisateur avec is_verified=false
+router.post("/register", registerUser);
 
-router.get('/', getUsers);
+// 2. Envoi OTP
+router.post("/send-otp", sendOtpDirect);
+
+// 3. Vérification OTP
+router.post("/verify-otp", verifyOtp);
+
+// 4. Connexion
+router.post("/login", loginUser);
 
 module.exports = router;
